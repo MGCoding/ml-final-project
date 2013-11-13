@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 model.o:
+=======
+train.o:
+>>>>>>> 5fdba5320df8d921cc0f262662cf6cfff5d0e8f5
 	g++ -c src/model.cpp -o obj/model.o
 
 GNB.o:
