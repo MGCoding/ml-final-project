@@ -30,7 +30,7 @@ int readCSV(string file, vector<person> & out)
 		//last value is annotation
 		sensorData[9] = anno;
 		inFile >> uid >> sid >> stime;
-		cout << stime << endl;
+		//cout << stime << endl;
 		if(trainingData.size() > 0 && trainingData.back().uid == uid) {
 			// if same person, then check if same session
 			if(trainingData.back().sessions.back().sid == sid) {

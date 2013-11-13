@@ -1,9 +1,11 @@
-train.o:
-	g++ -c src/train.cpp -o obj/train.o
+model.o:
+	g++ -c src/model.cpp -o obj/model.o
 
-train: train.o
-	g++ obj/train.o -o bin/train
+GNB.o:
+	g++ -c src/GNB.cpp -o obj/GNB.o
 	
+GNB-test: GNB.o model.o
+	g++ obj/GNB.o obj/model.o src/GNB-test.cpp -o bin/GNB-test -O3
 clean:
 	rm obj/*
 	rm bin/*
