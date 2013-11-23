@@ -372,10 +372,9 @@ string DT::internalClassify(Node * node, double * example)
                 return internalClassify(node->children[i], example);
             }
         }
-    }else
-    {
-        return node->annotation;
     }
+    
+	return node->annotation;
 }
 
 string DT::classify(double * example)
@@ -389,9 +388,8 @@ string DT::classify(double * example)
                 return internalClassify(root->children[i], example);
             }
         }
-    }else
-    {
-        return root->annotation;
     }
+    
+    return root->annotation;
 }
 
