@@ -15,8 +15,11 @@ struct SensorRange{
 };
 
 struct Node{
-	SensorRange * s_range;
-	vector<Node> children;
+    int type; //0 = sensor_index, 1 = split, 2 = annotation
+    int sensor_index;
+	vector<SensorRange *> splits;
+	vector<Node *> children;
+    string annotation;
 };
 
 class DT {
@@ -27,11 +30,14 @@ private:
 	int k;
 	double mins[9];
 	double maxs[9];
-	
+	Node * root;
 public:
 	DT(int k);
 	void convertData(vector<person> & res);
 	double computeEntropy(vector<SensorRange *> & assignments, int & count);
-	double computeGain(vector<SensorRange *> & assignments);
-	void BuildTree(Node * parent, vector<SensorRange *> & assignments, double entropy, int k);
+	double computeGain(vector<SensorRange *> & assignments, int new_sensor, double old_entropy);
+    void buildTree();
+	Node * buildBranch(vector<SensorRange *> & assignments, double entropy, int k);
+    string classify(double* example);
+    string internalClassify(Node * node, double * example);
 };
