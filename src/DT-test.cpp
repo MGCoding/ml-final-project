@@ -21,18 +21,24 @@ inline string doubleToString(double value)
 int main()
 {
     vector<person> training, testing;
+	cout << "Reading training file..." << endl;
     readCSV("data/train.txt", training);
-    
     
     DT * dt = new DT(3);
     
     dt->convertData(training);
-    cout << "here" << endl;
+	cout << "Building tree..." << endl;
+	
+	long t = time(NULL);
     dt->buildTree();
-    cout << "here" << endl;
+	cout << "training time: " << (time(NULL) - t) << endl;
     int correct, total;
     correct = total = 0;
-    readCSV("data/testdata.txt", testing);
+    
+	cout << "Reading test file..." << endl;
+	readCSV("data/testdata.txt", testing);
+	t = time(NULL);
+	
     for(int i = 0; i < testing.size(); i++)
     {
         for(int j = 0; j < testing[i].sessions.size(); j++)
@@ -50,6 +56,7 @@ int main()
     }
     
     cout << "Accuracy: " << correct/(double)total << endl;
-    
+    cout << "testing time: " << (time(NULL) - t) << endl;
+	
     return 0;
 }

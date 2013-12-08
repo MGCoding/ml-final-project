@@ -15,9 +15,11 @@ private:
 	//mu indexed by sensor then hashed by annotation
 	vector<map<string, long double> > mu;
 	vector<map<string, long double> > sigma;
+	map<string, long double> priors;
 	static const double SQRT_2PI = 2.50662827463;
 public:
 	void computeMu(vector<person> & data);
 	void computeSigma(vector<person> & data);
+	void computePriors(vector<person> & data);
 	string computeAnnotation(double * sensorData);
 };

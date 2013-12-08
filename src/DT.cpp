@@ -68,7 +68,7 @@ double DT::computeGain(vector<SensorRange *> & assignments, int new_sensor, doub
 		splits.push_back(mins[new_sensor] + i * ((maxs[new_sensor] - mins[new_sensor])/(k+1)));
         //cout << splits.back() << " ";
 	}
-    cout << endl;
+    //cout << endl;
 	
 	for(int i = 0; i < splits.size(); i++)
 	{
@@ -118,11 +118,11 @@ double DT::computeEntropy(vector<SensorRange *> & assignments, int & count)
 {
     //cout << "entering compute entropy" << endl;
 
-    for(int i = 0; i < assignments.size(); i++)
+    /*for(int i = 0; i < assignments.size(); i++)
     {
         cout << assignments[i]->sensor_index << " ";
     }
-    cout << endl;
+    cout << endl;*/
 	double entropy = 0;
 	map<string, int> counts;
 	bool inRange;
@@ -269,7 +269,7 @@ Node * DT::buildBranch(vector<SensorRange *> & assignments, double entropy, int 
         return child;
     }else if(counts.size() == 0)
     {
-        cout << "This shouldn't happen" << endl;
+       // cout << "This shouldn't happen" << endl;
     }
     
     //determine which sensor to split on based on highest gain

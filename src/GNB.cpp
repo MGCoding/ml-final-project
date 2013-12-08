@@ -7,6 +7,35 @@ inline string doubleToString(double value)
 	return oss.str();
 }
 
+void GNB::computePriors(vector<person> & data)
+{
+	int p_size = data.size(), s_size;
+	int total = 0;
+	//for each person in the training data
+	for(int m = 0; m < p_size; m++)
+	{
+		//for each session in the training data
+		s_size = data[m].sessions.size();
+		for(int j = 0; j < s_size; j++)
+		{
+			for(int z = 0; z < data[m].sessions[j].sensorData.size(); z++)
+			{
+				string anno = doubleToString(data[m].sessions[j].sensorData[z][9]);
+				map<string, long double>::iterator it = priors.find(anno);
+
+				if(it == priors.end())
+				{
+					priors[anno] = 1;
+				}else{
+					priors[anno]++;
+				}
+				
+				total++;
+			}
+		}
+	}
+}
+
 void GNB::computeMu(vector<person> & data)
 {
 	for(int i = 0; i < 9; i++)
@@ -111,7 +140,7 @@ void GNB::computeSigma(vector<person> & data)
 			it->second /= counts[it->first]-1;
 			//take sqrt?
 		}
-	}
+	}	
 }
 
 string GNB::computeAnnotation(double * sensorData)
@@ -126,12 +155,13 @@ string GNB::computeAnnotation(double * sensorData)
 	{
 		for(map<string, long double>::iterator it = sigma[i].begin(); it != sigma[i].end(); ++it)
 		{
-			first = sqrt(it->second) * SQRT_2PI;
+			first = 1/(sqrt(it->second) * SQRT_2PI);
 			second = 1/(2 * it->second);
 			second *= -1 * ((sensorData[i] - mu[i][it->first]) * (sensorData[i] - mu[i][it->first]));
-			first = -1 * log(first);
-			first += second;
-			
+			//first = -1 * log(first);
+			first *= exp(second);
+			first = log(first);
+			first += log(priors[it->first]);
 			map<string, long double>::iterator it2 = sums.find(it->first);
 			if(it2 == sums.end())
 			{
