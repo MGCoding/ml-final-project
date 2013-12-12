@@ -65,16 +65,15 @@ int main(int argc, char *argv[]) {
             error = m->train(trainingData[i],annotationIdx[trainingData[i][9]]);
         }
         random_shuffle(trainingData.begin(),trainingData.end());
-        double correct = 0, total = 0;
-        
-        for (int i = 0; i < testingData.size(); i++)
-        {
-            if(idxAnnotation[m->classify(testingData[i])]==testingData[i][9])
-                correct++;
-            total++;
-        }
-        
-        cout << atoi(argv[4]) << ", " << epoch << ", " << correct << ", " << total << ", " << correct/total << endl;
     }
+    cout << "Calculating accuracy..." << endl;
+    double correct = 0, total = 0;
+    for (int i = 0; i < testingData.size(); i++)
+    {
+        if(idxAnnotation[m->classify(testingData[i])]==testingData[i][9])
+            correct++;
+        total++;
+    }
+    cout << correct << ", " << total << ", " << correct/total << endl;
     return 0;
 }
