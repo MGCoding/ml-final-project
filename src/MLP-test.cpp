@@ -38,9 +38,7 @@ int main(int argc, char *argv[]) {
     for(map<double,bool>::iterator it = annotation.begin(); it != annotation.end(); it++, i++) {
         annotationIdx[it->first] = i;
         idxAnnotation[i] = it->first;
-        cout << it->first << ",";
     }
-    cout << endl;
     
     vector<person> testing;
     cout << "Reading in testing data..." << endl;
@@ -61,11 +59,14 @@ int main(int argc, char *argv[]) {
     
     cout << "Training MLP..." << endl;
     for(int epoch = 0; epoch < atoi(argv[3]); epoch++) {
+        cout << epoch << "...";
+        cout.flush();
         for (int i = 0; i < trainingData.size(); i++) {
             error = m->train(trainingData[i],annotationIdx[trainingData[i][9]]);
         }
         random_shuffle(trainingData.begin(),trainingData.end());
     }
+    cout << endl;
     cout << "Calculating accuracy..." << endl;
     double correct = 0, total = 0;
     for (int i = 0; i < testingData.size(); i++)

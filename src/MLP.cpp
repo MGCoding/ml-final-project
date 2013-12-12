@@ -146,14 +146,14 @@ int MLP::classify(double *x) {
     for (int j = 0; j < features; j++) {
       hiddenVal[i] += fhWeight[j][i]*x[j];
     }
-    hiddenVal[i] = 1/(1+exp(-hiddenVal[i]));
+    hiddenVal[i] = func(hiddenVal[i]);
   }
   for (int i = 0; i < output; i++) {
     outputVal[i] = 0;
     for (int j = 0; j < hidden; j++) {
       outputVal[i] += hoWeight[j][i]*hiddenVal[j];
     }
-    outputVal[i] = 1/(1+exp(-outputVal[i]));
+    outputVal[i] = func(outputVal[i]);
   }
   int maxIdx = -1;
   double maxVal = -DBL_MAX;
