@@ -69,7 +69,7 @@
 
 Physiological Data Modeling, the topic chosen for this project, contains several obstacles that must be overcome before accurate predictions can be made.  These obstacles are derived from the acquisition of data through sensors.  Sensors are inherently noisy, can be combined to provide a more accurate representation than each sensor taken individually, and represent continuous values rather than discrete.  The goal of our project was to obtain the highest accuracy possible when predicting annotations for each instance of the data.  Given for each data instance was the age, handedness, gender, nine sensors each pertaining to a different reading, and the session time that had elapsed since the beginning.  In this paper, annotations refer to the classification given to one instance of the data.  Classifications for this data set are multivariate.
 
-Given the previous information, we determined that the most important attributes for accurately predicting an annotation would be the sensor data.  Because the data at hand is continuous we developed five unique classifiers.  These classifiers are Gaussian Naive Bayes, Decision Trees using K-splits, K-Nearest Neighbors (kNN), linear perceptron, and a neural network.  Each of these classifiers will be discussed in detail in the implementation section of the report.
+Given the previous information, we determined that the most important attributes for accurately predicting an annotation would be the sensor data.  Because the data at hand is continuous we developed five unique classifiers.  These classifiers are Gaussian Naive Bayes, Decision Trees using K-splits, K-Nearest Neighbors (kNN), Multi-class Perceptron, and a Multi-level Perceptron.  Each of these classifiers will be discussed in detail in the implementation section of the report.
 
 \section{Referenced Work}
 
@@ -134,11 +134,11 @@ Implementing kNN was straightforward and no extra features were added.  Euclidea
 \end{equation}
 No pruning is used after reading in the training data therefore each test example compares against over five hundred thousand training examples.  This complexity results in longer testing times but overall higher accuracy which will be discussed in the results section of this report.
 
-\subsection{Perceptron}
-The perceptron algorithm learning in class was for binary classification. Our data has over 50 classifications so a multi-classification perceptron had to be implemented.  It is essentially the same algorithm with a few tweaks.  The main change is instead of having one weight vector, there are N weight vectors with each corresponding to a specific class.  The positive dot product should correspond to the appropriate class.  To train the weights on the data all of them are iterated over for each class and error correction is implemented when a misclassification is encountered.  Then come classification time, all but one of the dot products should be negative.  
+\subsection{Multi-class Perceptron}
+The perceptron algorithm learned in class was for binary classification. Our data has over 50 classifications so a multi-classification perceptron had to be implemented.  It is essentially the same algorithm with a few tweaks.  The main change is instead of having one weight vector, there are C weight vectors with each corresponding to a specific class.  The positive dot product indicates the appropriate class while the non-positive dot product indicates it is not appropriate.  For training, weights are iterated over for each data vector per class and error correction is implemented when a misclassification is encountered.  Then come classification time, all but one of the dot products should be negative and this will indicate the appropriate class.  
 
 \subsection{Neural Network}
-A simple (single hidden layer) neural network was implemented to try to classify the test data better.  The program takes in the max iterations, number of hidden nodes, and activation function as parameters.  During training, a sample vector's output is computed and the error is back propogated on misclassification.  Two activation functions were implemented: 
+A simple (single hidden layer) neural network was implemented to attempt to classify the test data better.  The program takes in the max iterations, number of hidden nodes, and activation function as parameters.  During training, a sample vector's output is computed and the error is back propagated on misclassification.  Two activation functions were implemented: 
 \begin{equation}
 \label{activ1}
 y=\frac{1}{1+e^(-x)}
@@ -187,8 +187,8 @@ The accuracy of kNN is excellent due to the large amount of training data availa
 \subsection{Multi-class Perceptron}
 The perceptron algorithm is designed to linearly classify data.  If the data is not linearly classifiable then convergence will never be reached during training.  The data set we trained on is not linearly classifiable unfortunately and did not achieve great results.  As usual, the annotation $0$ was classified more so than any other annotation.
 
-\subsection{Multi-layered Perceptron}
-The purpose of adding hidden units into a network of perceptrons is to create linear separation in the data when it is not linearly separable.  The algorithm was expected to produce better results than a single perceptron, but it did not.  
+\subsection{Neural Network}
+The purpose of adding hidden units into a network of perceptrons is to create linear separation in the data when it is not linearly separable.  The algorithm was expected to produce better results than a single perceptron, but it did not.  Since the $0$ annotation is so prominent in the data set, we were curious to see if better results could be obtained by ignoring them and focusing on the others.  By doing this, the neural network achieved worse results indicating that this subset of data also has a lot of noise.   
 
 \section{Future Improvements}
 Improvements could be made to each classifier to both improve time complexity and accuracy.  For Gaussian Naive Bayes, Decision Trees, and Multi-class Perceptron that would be the exclusion of the training data that includes the $0$ annotation.  Any test example that is classified as such would be ignored for both classification and total number of examples.  This would improve Gaussian Naive Bayes by removing the overwhelming prior on the $0$ annotation as well as improve training and classification time by removing nine sets of means and variances.  Decision Trees would also likely improve due to the fact that each other annotation would no longer have to compete with the large amount of $0$ annotations when determining the leaf nodes annotation.  Finally, the Multi-class Perceptron might converge when not including the $0$ annotation.
