@@ -1,0 +1,4 @@
+Description:
+Given a data set of physiological temperature sensor readings, can the activity being performed be predicted?  The data is temporal, multinomial, and contains noise so the challenge will be to filter through these issues to increase accuracy of our prediction.
+Plan:
+To start off we will implement a simple perceptron approach.  There will be two separate classifiers: male, female.  This will give us a baseline we can use as a “relative” prediction measure.  In this approach we will be averaging together all sensor data from one annotation given the session ID to help combat temporal issues.  Afterwards we will alter the algorithm to accept as bias the output of the previously predicted annotation giving us a temporal perceptron.  If time allows we will test different implementations of neural nets to see if better accuracy can be obtained.
